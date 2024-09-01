@@ -1,0 +1,641 @@
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>GTA Style Interface</title>
+            <style>
+                
+                @font-face {
+                    font-family: 'Pricedown';
+                    src: url('fonts/pricedown bl.otf') format('opentype');
+                }
+
+                @font-face {
+                    font-family: 'TSGTA-Regular';
+                    src: url('fonts/TSGTA-Regular.otf') format('opentype');
+                }
+
+                body {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    height: 100vh;
+                    background-color: #000;
+                    color: #fff;
+                    font-family: 'Pricedown', 'TSGTA-Regular', sans-serif;
+                    margin: 0;
+                }
+
+                .interface {
+                    text-align: center;
+                    position: relative;
+                }
+
+                .time {
+                    font-size: 48px;
+                    margin-bottom: 10px;
+                }
+
+                .health-bar {
+                    width: 200px;
+                    height: 20px;
+                    background-color: red;
+                    margin-bottom: 20px;
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+
+                .gun {
+                    position: absolute;
+                    top: 10px;
+                    left: 10px;
+                }
+
+                .money {
+                    color: #006400;
+                    font-size: 48px;
+                    margin-bottom: 10px;
+                }
+
+                .stars {
+                    display: flex;
+                    justify-content: center;
+                    margin-bottom: 20px;
+                }
+
+                .stars img {
+                    margin: 0 2px;
+                }
+
+                .input-section {
+                    margin-top: 20px;
+                }
+
+                .input-section input {
+                    padding: 10px;
+                    font-size: 24px;
+                    font-family: 'Pricedown', 'TSGTA-Regular', sans-serif;
+                    margin-bottom: 10px;
+                    border: 1px solid #ddd;
+                    border-radius: 5px;
+                }
+
+                .input-section button {
+                    padding: 10px 20px;
+                    font-size: 24px;
+                    font-family: 'Pricedown', 'TSGTA-Regular', sans-serif;
+                    background-color: #006400;
+                    color: #fff;
+                    border: none;
+                    margin: 5px;
+                    cursor: pointer;
+                    border-radius: 5px;
+                }
+
+                .input-section button:hover {
+                    background-color: #004d00;
+                }
+
+                .logs-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 20px;
+        }
+
+        .log, .debts-log {
+            flex: 1;
+            margin: 0 10px;
+        }
+
+                .log, .debts-log {
+            margin-top: 20px;
+            width: 80%;
+            max-width: 600px;
+            text-align: left;
+            font-size: 28px;
+            color: yellow; /* تعديل اللون هنا */
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #333;
+            padding: 10px;
+        }
+
+                .log-title, .debts-title {
+                    color: white;
+                    text-align: center;
+                    font-size: 36px;
+                    margin-bottom: 10px;
+                    border-bottom: 2px solid #006400;
+                    padding-bottom: 5px;
+                    
+                }
+
+                .delete-button {
+                    background-color: white;
+                    color: black;
+                    border: none;
+                    cursor: pointer;
+                    margin-left: 10px;
+                    border-radius: 5px;
+                }
+
+                .debts {
+                    margin-top: 20px;
+                    width: 80%;
+                    max-width: 600px;
+                    text-align: left;
+                    font-size: 28px;
+                }
+
+                .debts input {
+                    padding: 10px;
+                    font-size: 24px;
+                    font-family: 'Pricedown', 'TSGTA-Regular', sans-serif;
+                    margin-bottom: 10px;
+                    border: 1px solid #ddd;
+                    border-radius: 5px;
+                }
+
+                .debts button {
+                    padding: 10px 20px;
+                    font-size: 24px;
+                    font-family: 'Pricedown', 'TSGTA-Regular', sans-serif;
+                    background-color: #006400;
+                    color: #fff;
+                    border: none;
+                    margin: 5px;
+                    cursor: pointer;
+                    border-radius: 5px;
+                }
+
+                .debts button:hover {
+                    background-color: #004d00;
+                }
+
+                .archived-log, .archived-debts {
+                    color: white;
+                }
+
+
+
+                .star-filled {
+                    background: url('images/star_filled.png') no-repeat center center;
+                    background-size: contain;
+                }
+
+                .star-empty {
+                    background: url('images/star_empty.png') no-repeat center center;
+                    background-size: contain;
+                }
+
+                .toggle-button {
+    background: url('E:/GTA_Interface_Project/images/arrow.png') no-repeat center center;
+    background-size: contain;
+    width: 20px;
+    height: 20px;
+    border: none;
+    cursor: pointer;
+}
+
+/* إخفاء الأزرار الخضراء */
+.input-section button[onclick="toggleLog()"],
+.input-section button[onclick="toggleLogDebts()"] {
+    display: none;
+}
+
+
+
+                
+            </style>
+        </head>
+        <body>
+            <div class="interface">
+                <div class="gun" id="gun">
+                    <img src="images/gun.png" alt="Gun Image" width="100">
+                </div>
+                <div class="time" id="time"></div>
+                <div class="health-bar"></div>
+                <div class="money" id="money">$0</div>
+                <div class="stars" id="stars">
+                    <img src="images/star_empty.png" alt="Star" width="30">
+                    <img src="images/star_empty.png" alt="Star" width="30">
+                    <img src="images/star_empty.png" alt="Star" width="30">
+                    <img src="images/star_empty.png" alt="Star" width="30">
+                    <img src="images/star_empty.png" alt="Star" width="30">
+                </div>
+                <div class="input-section">
+    <input type="number" id="numberInput" placeholder="Enter number" onkeypress="handleKeyPress(event, 'updateMoney')">
+    <input type="text" id="descriptionInput" placeholder="Enter description" onkeypress="handleKeyPress(event, 'updateMoney')">
+    <button onclick="updateMoney()">Update</button>
+    <button onclick="window.location.href='archived_log.html'" class="archived-log">Archived Log</button>
+    <button onclick="resetLog()">Reset Log</button>
+    <button onclick="window.location.href='debts.html'" class="archived-debts">View Debts</button>
+    <div class="reset-buttons">
+        </div>
+    <button onclick="toggleLog()">Toggle Log</button>
+    <button onclick="toggleLogDebts()">Toggle Log Debts</button>
+    
+
+
+
+</div>
+
+                <div class="debts" id="debts" style="display: none;">
+                    <input type="number" id="debtAmountInput" placeholder="Enter debt amount" onkeypress="handleKeyPress(event, 'addDebt')">
+                    <input type="text" id="debtPersonInput" placeholder="Enter debt person" onkeypress="handleKeyPress(event, 'addDebt')">
+                    <input type="date" id="debtDateInput" placeholder="Enter debt date">
+                    <input type="date" id="dueDateInput" placeholder="Enter due date">
+                    <input type="text" id="debtPurposeInput" placeholder="Enter debt purpose" onkeypress="handleKeyPress(event, 'addDebt')">
+                    <button onclick="addDebt()">Add Debt</button>
+                </div>
+                <div class="logs-container  ">
+                    <div class="log">
+                        <div class="log-title">
+                            سجل النفقات والمدخرات 
+                            <button class="toggle-button" onclick="toggleLog()"></button>
+                        </div>
+                        <div id="log"></div>
+                    </div>
+                    <div class="debts-log">
+                        <div class="debts-title">
+                            سجل الديون 
+                            <button class="toggle-button" onclick="toggleLogDebts()"></button>
+                        </div>
+                        <div id="debts-log"></div>
+                    </div>
+                    
+
+
+                <audio id="incomeSound" src="sounds/income.mp3"></audio>
+                <audio id="expenseSound" src="sounds/expense.mp3"></audio>
+                <audio id="debtSound" src="sounds/ApplePaySuccess.mp3"></audio>
+                <audio id="hoverSound" src="E:/GTA_Interface_Project/sounds/gta-menu.wav"></audio>
+                <audio id="clickSound" src="E:/GTA_Interface_Project/sounds/open.wav"></audio>
+                <audio id="backSound" src="E:/GTA_Interface_Project/sounds/back.wav"></audio>
+
+            </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                
+                function handleKeyPress(event, action) {
+                    if (event.key === 'Enter') {
+                    if (action === 'updateMoney') {
+                        document.querySelector('button[onclick="updateMoney()"]').click();
+                    } else if (action === 'addDebt') {
+                        document.querySelector('button[onclick="addDebt()"]').click();
+                    }
+                    
+                }
+            }
+            
+
+                function updateTime() {
+                    const now = new Date();
+                    const hours = String(now.getHours()).padStart(2, '0');
+                    const minutes = String(now.getMinutes()).padStart(2, '0');
+                    document.getElementById('time').innerText = `${hours}:${minutes}`;
+                }
+
+                function updateMoney() {
+        const numberInput = parseInt(document.getElementById('numberInput').value) || 0;
+        const descriptionInput = document.getElementById('descriptionInput').value || '';
+        const moneyElement = document.getElementById('money');
+        let moneyValue = parseInt(moneyElement.innerText.replace('$', '')) || 0;
+
+        moneyValue += numberInput;
+
+        if (numberInput > 0) {
+            const incomeSound = document.getElementById('incomeSound').cloneNode(true);
+            incomeSound.play();
+        } else {
+            const expenseSound = document.getElementById('expenseSound').cloneNode(true);
+            expenseSound.play();
+        }
+
+        moneyElement.innerText = `$${moneyValue}`;
+        updateMoneyColor(moneyValue);
+        updateStarsAndGun(moneyValue);
+        addToLog(numberInput, descriptionInput);
+        
+        // تخزين البيانات في localStorage
+        localStorage.setItem('moneyValue', moneyValue);
+        localStorage.setItem('logEntries', JSON.stringify(Array.from(document.getElementById('log').children).map(entry => entry.outerHTML)));
+    }
+
+
+
+
+
+
+                function updateMoneyColor(moneyValue) {
+                    const moneyElement = document.getElementById('money');
+                    if (moneyValue < 0) {
+                        moneyElement.style.color = 'red';
+                    } else {
+                        moneyElement.style.color = '#006400';
+                    }
+                }
+                function addToLog(amount, description) {
+    const logElement = document.getElementById('log');
+    const entry = document.createElement('div');
+    const date = new Date().toLocaleDateString();
+    const entryText = amount > 0
+        ? `Received $${amount} from ${description || '[ ]'} on ${date}.`
+        : `Spent $${Math.abs(amount)} on ${description || '[ ]'} on ${date}.`;
+
+    entry.innerHTML = `
+        <span style="color: ${amount > 0 ? 'green' : 'red'};">
+            ${entryText}
+        </span>
+        <button class="delete-button" onclick="deleteLogEntry(this)">X</button>`;
+    logElement.appendChild(entry);
+}
+
+function deleteLogEntry(button) {
+    const entry = button.parentElement;
+    const entryContent = entry.innerHTML;
+    
+    // نقل جميع الإدخالات المكررة إلى الأرشيف
+    const logEntries = Array.from(document.getElementById('log').children);
+    logEntries.forEach(logEntry => {
+        if (logEntry.innerHTML === entryContent) {
+            archiveEntry('archivedLog', logEntry.innerHTML);
+            logEntry.remove();
+        }
+    });
+    
+    saveLogToLocalStorage('log'); // إضافة حفظ البيانات بعد الحذف
+}
+
+
+
+
+function resetLog() {
+    const logElement = document.getElementById('log');
+    const entries = Array.from(logElement.children);
+    entries.forEach(entry => {
+        archiveEntry('archivedLog', entry.innerHTML);
+        entry.remove();
+    });
+    localStorage.removeItem('logEntries');
+}
+
+
+
+
+                function addDebt() {
+        const debtAmountInput = parseInt(document.getElementById('debtAmountInput').value);
+        const debtPersonInput = document.getElementById('debtPersonInput').value || 'No person specified';
+        const debtDateInput = document.getElementById('debtDateInput').value || 'No date specified';
+        const dueDateInput = document.getElementById('dueDateInput').value || 'No due date specified';
+        const debtPurposeInput = document.getElementById('debtPurposeInput').value || 'No purpose specified';
+
+        if (!isNaN(debtAmountInput)) {
+            const debtsLogElement = document.getElementById('debts-log');
+            const entry = document.createElement('div');
+            entry.innerHTML = `
+                <span style="color: green;">Owed $${debtAmountInput}</span> 
+                <span style="color: white;">to ${debtPersonInput}</span> 
+                <span style="color: yellow;">for ${debtPurposeInput}</span>, 
+                <span style="color: yellow;">borrowed on ${debtDateInput}</span>, 
+                <span style="color: yellow;">due by ${dueDateInput}</span> 
+                <button class="delete-button" onclick="deleteDebtEntry(this)">X</button>`;
+            debtsLogElement.appendChild(entry);
+
+            const debtSound = document.getElementById('debtSound').cloneNode(true);
+            debtSound.play();
+
+            // تخزين البيانات في localStorage
+            localStorage.setItem('debtsLogEntries', JSON.stringify(Array.from(document.getElementById('debts-log').children).map(entry => entry.outerHTML)));
+        }
+    }
+
+
+
+
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', options);
+        }
+
+
+
+
+
+
+        function deleteDebtEntry(button) {
+    const entry = button.parentElement;
+    archiveEntry('archivedDebts', entry.innerHTML);
+    entry.remove();
+
+    // تحديث السجل في localStorage بعد الحذف
+    const debtsLogEntries = Array.from(document.getElementById('debts-log').children).map(entry => entry.innerHTML);
+    localStorage.setItem('debtsLogEntries', JSON.stringify(debtsLogEntries));
+}
+
+
+
+function resetDebts() {
+    const debtsLogElement = document.getElementById('debts-log');
+    const entries = Array.from(debtsLogElement.children);
+    entries.forEach(entry => {
+        archiveEntry('archivedDebts', entry.innerHTML);
+        entry.remove();
+    });
+    localStorage.removeItem('debtsLogEntries');
+}
+
+
+
+
+    function archiveEntry(archiveKey, entryHTML) {
+    let archivedEntries = JSON.parse(localStorage.getItem(archiveKey)) || [];
+    archivedEntries.push(entryHTML);  // السماح بالتكرار عن طريق الإضافة دون تحقق
+    localStorage.setItem(archiveKey, JSON.stringify(archivedEntries));
+}
+
+
+
+    function deleteEntry(logType, entryElement) {
+        if (logType === 'log') {
+            archiveEntry('archivedLog', entryElement.innerHTML);
+            entryElement.remove();
+            saveLogToLocalStorage('log');
+        } else if (logType === 'debts') {
+            archiveEntry('archivedDebts', entryElement.innerHTML);
+            entryElement.remove();
+            saveLogToLocalStorage('debtsLog');
+        }
+    }
+    function handleKeyPress(event, action) {
+        if (event.key === 'Enter') {
+            if (action === 'updateMoney') {
+                document.querySelector('button[onclick="updateMoney()"]').click();
+            } else if (action === 'addDebt') {
+                document.querySelector('button[onclick="addDebt()"]').click();
+            }
+        }
+    }
+
+
+
+    function saveLogToLocalStorage(logType) {
+        const logElement = document.getElementById(logType === 'log' ? 'log' : 'debts-log');
+        const entries = Array.from(logElement.children).map(entry => entry.innerHTML);
+        localStorage.setItem(logType === 'log' ? 'logEntries' : 'debtsLogEntries', JSON.stringify(entries));
+    }
+
+                function toggleDebts() {
+                    const debtsSection = document.getElementById('debts');
+                    debtsSection.style.display = debtsSection.style.display === 'none' ? 'block' : 'none';
+                }
+
+                function toggleLog() {
+                    const logSection = document.getElementById('log');
+                    logSection.style.display = logSection.style.display === 'none' ? 'block' : 'none';
+                }
+
+                function toggleLogDebts() {
+                    const logDebtsSection = document.getElementById('debts-log');
+                    logDebtsSection.style.display = logDebtsSection.style.display === 'none' ? 'block' : 'none';
+                }
+
+                function updateStarsAndGun(money) {
+                    const starsElement = document.getElementById('stars');
+                    const starImages = starsElement.getElementsByTagName('img');
+                    const gunElement = document.getElementById('gun').getElementsByTagName('img')[0];
+
+                    // تحديد عدد النجوم المملوءة
+                    const starsToFill = Math.floor(money / 100) % 5;
+
+                    // إعادة تعيين النجوم إلى فارغة
+                    for (let i = 0; i < starImages.length; i++) {
+                        starImages[i].src = 'images/star_empty.png';
+                    }
+
+                    // تحديث صور النجوم من اليمين إلى اليسار
+                    for (let i = 0; i < starsToFill; i++) {
+                        starImages[starImages.length - 1 - i].src = 'images/star_filled.png';
+                    }
+
+                    // تحديد صورة السلاح الحالية بناءً على النطاق المالي
+                    let gunImageNumber;
+                    if (money < 500) {
+                        gunImageNumber = 'gun'; // gun.png
+                    } else if (money < 1000) {
+                        gunImageNumber = 'gun1'; // gun1.png
+                    } else if (money < 1500) {
+                        gunImageNumber = 'gun2'; // gun2.png
+                    } else {
+                        gunImageNumber = 'gun3'; // gun3.png
+                    }
+
+                    // تعيين صورة السلاح إلى الصورة الصحيحة بناءً على النطاق المالي الحالي
+                    gunElement.src = `images/${gunImageNumber}.png`;
+                }
+
+                updateTime();
+                setInterval(updateTime, 60000);
+
+                document.addEventListener('DOMContentLoaded', () => {
+        loadData();
+    });
+    function addEntry(type, amount) {
+        const date = new Date();
+        const formattedDate = date.toISOString().split('T')[0]; // استخراج التاريخ فقط
+        const entryHTML = `<div class="${type}">${type.charAt(0).toUpperCase() + type.slice(1)}: $${amount} [${formattedDate}] <button class="delete-button">X</button></div>`;
+        
+        entries.push(entryHTML);
+        localStorage.setItem('logEntries', JSON.stringify(entries));
+        renderEntries();
+    }
+    function addExpenseEntry(entryText) {
+    const expensesLog = document.getElementById('expenses-log');
+    const entryId = 'expense-entry-' + Date.now(); // إضافة معرف فريد
+    const entry = document.createElement('div');
+    entry.innerHTML = entryText + ` <button onclick="archiveEntry('${entryId}', 'expenses-log', 'expenses-archive')">X</button>`;
+    entry.id = entryId; // تعيين المعرف الفريد للإدخال
+    expensesLog.appendChild(entry);
+
+    updateLogStorage('expenses-log');
+}
+
+function addSavingsEntry(entryText) {
+    const savingsLog = document.getElementById('savings-log');
+    const entryId = 'savings-entry-' + Date.now(); // إضافة معرف فريد
+    const entry = document.createElement('div');
+    entry.innerHTML = entryText + ` <button onclick="archiveEntry('${entryId}', 'savings-log', 'savings-archive')">X</button>`;
+    entry.id = entryId; // تعيين المعرف الفريد للإدخال
+    savingsLog.appendChild(entry);
+
+    updateLogStorage('savings-log');
+}
+
+
+    function loadData() {
+        const moneyValue = localStorage.getItem('moneyValue');
+        if (moneyValue !== null) {
+            document.getElementById('money').innerText = `$${moneyValue}`;
+            updateMoneyColor(parseInt(moneyValue));
+            updateStarsAndGun(parseInt(moneyValue));
+        }
+
+        const logEntries = JSON.parse(localStorage.getItem('logEntries'));
+        if (logEntries !== null) {
+            const logElement = document.getElementById('log');
+            logEntries.forEach(entryHTML => {
+                const entry = document.createElement('div');
+                entry.innerHTML = entryHTML;
+                logElement.appendChild(entry);
+            });
+        }
+
+        const debtsLogEntries = JSON.parse(localStorage.getItem('debtsLogEntries'));
+        if (debtsLogEntries !== null) {
+            const debtsLogElement = document.getElementById('debts-log');
+            debtsLogEntries.forEach(entryHTML => {
+                const entry = document.createElement('div');
+                entry.innerHTML = entryHTML;
+                debtsLogElement.appendChild(entry);
+            });
+        }
+    }
+
+            </script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    // تحميل عناصر الصوت
+                    const hoverSound = document.getElementById('hoverSound');
+                    const clickSound = document.getElementById('clickSound');
+                    const backSound = document.getElementById('backSound');
+            
+                    // تشغيل الصوت عند التمرير على الأزرار الخضراء
+                    const greenButtons = document.querySelectorAll('.input-section button');
+                    greenButtons.forEach(button => {
+                        button.addEventListener('mouseover', () => {
+                            hoverSound.play();
+                        });
+                        button.addEventListener('click', () => {
+                            clickSound.play();
+                        });
+                    });
+            
+                    // تشغيل الصوت عند العودة من صفحة الأرشيف
+                    if (document.referrer.includes('archived_log.html') || document.referrer.includes('archived_debts.html')) {
+                        backSound.play();
+                    }
+                });
+            </script>
+            
+        </body>
+        </html>

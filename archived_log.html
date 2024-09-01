@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archived Log</title>
+    <style>
+        
+        @font-face {
+    font-family: 'TSGTA-Regular';
+    src: url('fonts/TSGTA-Regular.otf') format('opentype');
+}
+
+body {
+    font-family: 'TSGTA-Regular', sans-serif;
+}
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #000;
+            color: #fff;
+            font-family: 'Pricedown', 'TSGTA-Regular', sans-serif;
+            margin: 0;
+        }
+
+        .archived-log {
+            width: 80%;
+            max-width: 600px;
+            font-size: 30px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #333;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .archived-log-title {
+            color: white;
+            text-align: center;
+            font-size: 50px;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #006400;
+            padding-bottom: 5px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+            max-width: 600px;
+            margin: 20px 0;
+        }
+
+        .back-button, .reset-button {
+            padding: 10px 20px;
+            font-size: 24px;
+            font-family: 'Pricedown', 'TSGTA-Regular', sans-serif;
+            background-color: #006400;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .back-button:hover, .reset-button:hover {
+            background-color: #004d00;
+        }
+    </style>
+</head>
+<body>
+    <div class="archived-log">
+        <div class="archived-log-title">Archived Log</div>
+        <div id="archived-log"></div>
+    </div>
+    <div class="button-container">
+        <button onclick="window.history.back()" class="back-button">Back</button>
+        <button onclick="resetArchivedLog()" class="reset-button">Reset</button>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const archivedEntries = JSON.parse(localStorage.getItem('archivedLog')) || [];
+            const archivedLogElement = document.getElementById('archived-log');
+            archivedEntries.forEach((entryHTML, index) => {
+                const entry = document.createElement('div');
+                entry.innerHTML = entryHTML;
+                const deleteButton = entry.querySelector('.delete-button');
+                deleteButton.addEventListener('click', () => {
+                    archivedEntries.splice(index, 1);
+                    localStorage.setItem('archivedLog', JSON.stringify(archivedEntries));
+                    entry.remove();
+                });
+                archivedLogElement.appendChild(entry);
+            });
+        });
+
+        function resetArchivedLog() {
+            localStorage.removeItem('archivedLog');
+            document.getElementById('archived-log').innerHTML = '';
+        }
+    </script>
+</body>
+</html>
