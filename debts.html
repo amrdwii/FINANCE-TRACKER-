@@ -149,40 +149,35 @@
         }
 
         .debts {
-            margin-top: 20px;
-            width: 80%;
-            max-width: 600px;
-            text-align: left;
-            font-size: 28px;
-        }
+    display: flex;
+    flex-wrap: wrap; /* يسمح بتغيير الأسطر إذا لزم الأمر */
+    gap: 10px; /* المسافة بين العناصر */
+    justify-content: center; /* محاذاة العناصر إلى الوسط */
+    margin-top: 20px; /* إضافة مسافة من الأعلى */
+}
 
-        .debts input {
-            padding: 10px;
-            font-size: 24px;
-            font-family: 'Pricedown', 'TSGTA-Regular', sans-serif;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
+.debts input, .debts button {
+    flex: 1; /* السماح للعناصر بالنمو لتملأ المساحة المتاحة */
+    max-width: 150px; /* تحديد أقصى عرض لكل عنصر */
+    padding: 10px;
+    font-size: 24px;
+    font-family: 'Pricedown', 'TSGTA-Regular', sans-serif;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
 
-        .debts button {
-            padding: 10px 20px;
-            font-size: 24px;
-            font-family: 'Pricedown', 'TSGTA-Regular', sans-serif;
-            background-color: #006400;
-            color: #fff;
-            border: none;
-            margin: 10px 0; /* زيادة المسافة بين الأزرار */
-            cursor: pointer;
-            border-radius: 5px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3); /* إضافة تأثير الظل */
-            width: 100%; /* اجعل الزر يغطي العرض بالكامل */
-            font-weight: bold; /* زيادة سمك الخط */
-        }
+.debts button {
+    background-color: #006400;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px; /* المسافة من الأعلى للأزرار */
+}
 
-        .debts button:hover {
-            background-color: #004d00;
-        }
+.debts button:hover {
+    background-color: #004d00;
+}
+
 
         .debts button:active {
             transform: scale(0.98); /* إضافة تأثير تحريك عند التفاعل */
@@ -255,14 +250,15 @@
     <button onclick="window.location.href='archived_debts.html'" class="archived-debts">View Archived Debts</button>
 </div>
 
-        <div class="debts" id="debts" style="display: block;">
-            <input type="number" id="debtAmountInput" placeholder="Enter debt amount" onkeypress="handleKeyPress(event, 'addDebt')">
-            <input type="text" id="debtPersonInput" placeholder="Enter debt person" onkeypress="handleKeyPress(event, 'addDebt')">
-            <input type="date" id="debtDateInput" placeholder="Enter debt date">
-            <input type="date" id="dueDateInput" placeholder="Enter due date">
-            <input type="text" id="debtPurposeInput" placeholder="Enter debt purpose" onkeypress="handleKeyPress(event, 'addDebt')">
-            <button onclick="addDebt()">Add Debt</button>
-        </div>
+<div class="debts" id="debts" style="display: block;">
+    <input type="number" id="debtAmountInput" placeholder="Enter debt amount" onkeypress="handleKeyPress(event, 'addDebt')">
+    <input type="text" id="debtPersonInput" placeholder="Enter debt person" onkeypress="handleKeyPress(event, 'addDebt')">
+    <input type="date" id="debtDateInput" placeholder="Enter debt date">
+    <input type="date" id="dueDateInput" placeholder="Enter due date">
+    <input type="text" id="debtPurposeInput" placeholder="Enter debt purpose" onkeypress="handleKeyPress(event, 'addDebt')">
+    <button onclick="addDebt()">Add Debt</button>
+</div>
+
         <div class="logs-container">
             <div class="debts-log">
                 <div class="debts-title">
